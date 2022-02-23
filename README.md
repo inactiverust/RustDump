@@ -9,3 +9,4 @@ https://github.com/Perfare/Il2CppDumper
 This project basically just scans output from this tool automatically instead of manually.
 
 Tutorial Video:
+https://streamable.com/vynhup
