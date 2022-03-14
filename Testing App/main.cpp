@@ -17,6 +17,9 @@ namespace Offsets {
     uint64_t GraphicsConvar;
     uint64_t ConsoleTypeInfo;
     uint64_t OcclusionCulling;
+    uint64_t Client;
+    uint64_t Sky;
+    uint64_t Admin;
 };
 class VarOffset {
 public:
@@ -43,8 +46,9 @@ std::vector<std::string> fileLines;
 //Initialization of All of the Offsets to be Scanned
 //Check Out VarOffset Class to see How It is Used
 std::vector<VarOffset> offsetList =
-{ VarOffset("oAllowRunFromServer", "public bool AllowRunFromServer; // ", "public class ConsoleSystem.Command"),
-VarOffset("oPlayerFlags", "public BasePlayer.PlayerFlags playerFlags; // ", "public class BasePlayer : BaseCombatEntity"),
+{
+VarOffset("oAllowRunFromServer", "public bool AllowRunFromServer; // ", "public class ConsoleSystem.Command", "\n"),
+VarOffset("oPlayerFlags", "public BasePlayer.PlayerFlags playerFlags; // ", "public class BasePlayer : BaseCombatEntity", "BasePlayer"),
 VarOffset("oPlayerName", "protected string _displayName; // ", "public class BasePlayer : BaseCombatEntity"),
 VarOffset("oLastSentTickTime", "private float lastSentTickTime; // ", "public class BasePlayer : BaseCombatEntity"),
 VarOffset("oClientTeam", "public PlayerTeam clientTeam; // ", "public class BasePlayer : BaseCombatEntity"),
@@ -56,8 +60,8 @@ VarOffset("oFrozen", "public bool Frozen; // ", "public class BasePlayer : BaseC
 VarOffset("oWaterBonus", "public float clothingWaterSpeedBonus; // ", "public class BasePlayer : BaseCombatEntity"),
 VarOffset("oNoBlockAiming", "public bool clothingBlocksAiming; // ", "public class BasePlayer : BaseCombatEntity"),
 VarOffset("oSpeedReduction", "public float clothingMoveSpeedReduction; // ", "public class BasePlayer : BaseCombatEntity"),
-VarOffset("oClothingAccuracyBonus", "public float clothingAccuracyBonus; // ", "public class BasePlayer : BaseCombatEntity"),
-VarOffset("oPlayerHealth", "protected float _health; // ", "public class BaseCombatEntity : BaseEntity"),
+VarOffset("oClothingAccuracyBonus", "public float clothingAccuracyBonus; // ", "public class BasePlayer : BaseCombatEntity", "\n"),
+VarOffset("oPlayerHealth", "protected float _health; // ", "public class BaseCombatEntity : BaseEntity", "BaseCombatEntity\n"),
 VarOffset("oSuccessFraction", "public float successFraction; // ", "public class FlintStrikeWeapon : BaseProjectile"),
 VarOffset("oAttackRadius", "public float attackRadius; // ", "public class BaseMelee : AttackEntity"),
 VarOffset("oIsAutomatic", "public bool isAutomatic; // ", "public class BaseMelee : AttackEntity"),
@@ -87,7 +91,9 @@ VarOffset("oVisible", "internal bool visible; // ", "public class PlayerModel : 
 VarOffset("oPlayerInput", "public PlayerInput input; // ", "public class BasePlayer : BaseCombatEntity"),
 VarOffset("oBodyAngles", "private Vector3 bodyAngles; // ", "public class PlayerInput : EntityComponent<BasePlayer>"),
 VarOffset("oRecoilAngles", "public Vector3 recoilAngles; // ", "public class PlayerInput : EntityComponent<BasePlayer>"),
-VarOffset("oHasKeyFocus", "private bool hasKeyFocus; // ", "public class PlayerInput : EntityComponent<BasePlayer>")
+VarOffset("oHasKeyFocus", "private bool hasKeyFocus; // ", "public class PlayerInput : EntityComponent<BasePlayer>"),
+VarOffset("oLifestate", "public BaseCombatEntity.LifeState lifestate; // ", "public class BaseCombatEntity : BaseEntity"),
+VarOffset("oHeld", "private EntityRef heldEntity; // ", "public class Item //")
 };
 // Scans Script.json file for values
 void getConVars() {
@@ -102,6 +108,9 @@ void getConVars() {
     Offsets::GraphicsConvar = std::stoi(Utils::findAddress(buffer.str(), "ConVar_Graphics_c"));
     Offsets::ConsoleTypeInfo = std::stoi(Utils::findAddress(buffer.str(), "ConsoleSystem_Index_c"));
     Offsets::OcclusionCulling = std::stoi(Utils::findAddress(buffer.str(), "OcclusionCulling_c*"));
+    Offsets::Client = std::stoi(Utils::findAddress(buffer.str(), "ConVar_Client_c*"));
+    Offsets::Sky = std::stoi(Utils::findAddress(buffer.str(), "TOD_Sky_c*"));
+    Offsets::Admin = std::stoi(Utils::findAddress(buffer.str(), "ConVar_Admin_c*"));
 }
 // Sig Scans for GOM offset
 void getGOM() {
@@ -137,6 +146,9 @@ void fillFileLines() {
     fileLines.push_back("#define oGraphics " + std::to_string(Offsets::GraphicsConvar));
     fileLines.push_back("#define oConsoleTypeInfo " + std::to_string(Offsets::ConsoleTypeInfo));
     fileLines.push_back("#define oOcclusionCulling " + std::to_string(Offsets::OcclusionCulling));
+    fileLines.push_back("#define oClient " + std::to_string(Offsets::Client));
+    fileLines.push_back("#define oSky " + std::to_string(Offsets::Sky));  
+    fileLines.push_back("#define oAdminConVar " + std::to_string(Offsets::Admin));
     fileLines.push_back(""); //padding
     for (int i = 0; i < offsetList.size(); i++) {
         fileLines.push_back("#define " + offsetList.at(i).varName + " " + offsetList.at(i).offsetStr + " //" + offsetList.at(i).comment);

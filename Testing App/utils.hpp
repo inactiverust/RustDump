@@ -53,6 +53,7 @@ namespace Utils {
         for (int i = 0; i < arr.size(); i++) {
             out = out + arr.at(i) + "\n";
         }
+        out = "#pragma once\nDWORD64 automatic[]\n{\n\t1545779598, // AK;\n\t-1758372725, // Thompson\n\t1796682209, // SMG\n\t-1812555177,// LR\n\t1318558775, // MP5\n\t-2069578888, // M249\n};\nDWORD64 sniper[]\n{\n\t-778367295, // L96\n\t1588298435, // Bolt\n};\nDWORD64 eoka = -75944661;\nDWORD64 semiautomatic[]\n{\n\t-904863145, // SAR \n\t818877484, // SAP\n\t-852563019, // M92\n\t1373971859, // Python\n\t649912614, // Revolver\n\t28201841, // M39\n\t1953903201, // Nailgun\n\t-1123473824, // MGL\n};\n" + out;
         std::ofstream file("offsets.hpp");
         file << out;
         file.close();
