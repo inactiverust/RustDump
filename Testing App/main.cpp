@@ -104,7 +104,7 @@ void getConVars() {
         std::cout << "Script.JSON Error File May Be Missing";
         return;
     }
-    Offsets::BaseNetworkable = std::stoi(Utils::findAddress(buffer.str(), "BaseNetworkable_c"));
+    Offsets::BaseNetworkable = std::stoi(Utils::findAddress(buffer.str(), "BaseEntity_c*"));
     Offsets::GraphicsConvar = std::stoi(Utils::findAddress(buffer.str(), "ConVar_Graphics_c"));
     Offsets::ConsoleTypeInfo = std::stoi(Utils::findAddress(buffer.str(), "ConsoleSystem_Index_c"));
     Offsets::OcclusionCulling = std::stoi(Utils::findAddress(buffer.str(), "OcclusionCulling_c*"));
